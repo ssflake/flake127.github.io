@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Behaviorism in Instructional Design</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const BehaviorismGame = () => {
+          const [screen, setScreen] = useState('start');
+          const [selectedTheory, setSelectedTheory] = useState(null);
+          const [showFeedback, setShowFeedback] = useState(false);
+          const [isCorrect, setIsCorrect] = useState(false);
+
+          const theories = {
+            mastery: {
+              name: 'Mastery Learning',
+              description: 'Students must fully understand one topic before moving to the next',
+              question: 'How should you redesign the Yang\'guan poetry lesson using Mastery Learning?',
+              options: [
+                {
+                  text: 'Have all students recite the poem together at the end of class, then move to the next lesson',
+                  correct: false,
+                  feedback: 'This approach doesn\'t ensure individual mastery. In Mastery Learning, each student must demonstrate full understanding before progressing. Group recitation doesn\'t allow you to assess individual comprehension.'
+                },
+                {
+                  text: 'Break the lesson into steps: (1) identify the poem, (2) understand its meaning, (3) memorize key lines. Students must pass a quiz on each step before advancing',
+                  correct: true,
+                  feedback: 'Excellent choice! This embodies Mastery Learning by breaking learning into sequential steps with clear checkpoints. Students demonstrate mastery at each stage through assessment before moving forward, ensuring solid foundational understanding.'
+                },
+                {
+                  text: 'Let students choose which poems to study based on their interests and learn at their own pace',
+                  correct: false,
+                  feedback: 'While student choice is valuable, this approach lacks the structured, sequential progression that defines Mastery Learning. Mastery Learning requires clear learning objectives and evidence of competency before advancing to the next topic.'
+                }
+              ]
+            },
+            programmed: {
+              name: 'Programmed Instruction',
+              description: 'Students learn through self-paced, structured learning with immediate feedback',
+              question: 'How should you redesign the Yang\'guan poetry lesson using Programmed Instruction?',
+              options: [
+                {
+                  text: 'Create a digital module where students read about the poem, answer questions about it, and receive instant feedback before moving to the next section',
+                  correct: true,
+                  feedback: 'Perfect! This captures the essence of Programmed Instruction: self-paced learning with immediate feedback at each step. The structured, sequential format with instant reinforcement helps students learn independently while staying engaged.'
+                },
+                {
+                  text: 'Have the teacher lecture about the poem for 30 minutes, then give students a worksheet to complete',
+                  correct: false,
+                  feedback: 'This is traditional teacher-centered instruction, not Programmed Instruction. Programmed Instruction emphasizes self-paced learning with immediate feedback, not passive listening followed by delayed assessment.'
+                },
+                {
+                  text: 'Divide students into groups to discuss and interpret the poem together, then present their findings',
+                  correct: false,
+                  feedback: 'This collaborative approach doesn\'t align with Programmed Instruction, which focuses on individualized, self-paced learning with structured content and immediate feedback. Group work lacks the systematic, step-by-step progression that defines this approach.'
+                }
+              ]
+            },
+            criterion: {
+              name: 'Criterion-Referenced Instruction',
+              description: 'Students are measured against specific learning goals, not compared to others',
+              question: 'How should you redesign the Yang\'guan poetry lesson using Criterion-Referenced Instruction?',
+              options: [
+                {
+                  text: 'Grade students on a curve, with the top 20% receiving A\'s regardless of their actual understanding',
+                  correct: false,
+                  feedback: 'This is norm-referenced assessment, the opposite of Criterion-Referenced Instruction! Criterion-Referenced Instruction measures students against specific objectives, not against each other. Every student could potentially achieve the criteria.'
+                },
+                {
+                  text: 'Set clear objectives: students must (1) identify the poem\'s title and dynasty, (2) explain its theme, (3) recite two key lines. Students pass when they meet all three criteria',
+                  correct: true,
+                  feedback: 'Excellent! This exemplifies Criterion-Referenced Instruction by establishing specific, measurable learning objectives. Students are assessed on whether they meet these predetermined criteria, not on how they compare to peers. Success is clearly defined and achievable for all.'
+                },
+                {
+                  text: 'Let students demonstrate understanding in any way they prefer without specific requirements',
+                  correct: false,
+                  feedback: 'While flexibility is valuable, Criterion-Referenced Instruction requires specific, measurable criteria that students must meet. Without clear learning objectives and assessment standards, you cannot determine if students have achieved the intended learning outcomes.'
+                }
+              ]
+            }
+          };
+
+          const RotateCcwIcon = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+              <path d="M3 3v5h5"/>
+            </svg>
+          );
+
+          const handleTheorySelect = (theory) => {
+            setSelectedTheory(theory);
+            setScreen('question');
+          };
+
+          const handleAnswerSelect = (optionIndex) => {
+            const option = theories[selectedTheory].options[optionIndex];
+            setIsCorrect(option.correct);
+            setShowFeedback(true);
+          };
+
+          const handleTryAgain = () => {
+            setShowFeedback(false);
+          };
+
+          const handleReturnToStart = () => {
+            setScreen('start');
+            setSelectedTheory(null);
+            setShowFeedback(false);
+            setIsCorrect(false);
+          };
+
+          return (
+            <div className="min-h-screen bg-gradient-to-br from-slate-800 to-slate-900 p-8">
+              <div className="max-w-4xl mx-auto">
+                {screen === 'start' && (
+                  <div className="bg-white rounded-lg shadow-2xl p-8">
+                    <h1 className="text-4xl font-bold text-amber-600 mb-4">Behaviorism in Instructional Design</h1>
+                    <div className="bg-slate-100 p-6 rounded-lg mb-6">
+                      <h2 className="text-xl font-semibold mb-3">The Scenario:</h2>
+                      <p className="text-gray-700 leading-relaxed mb-4">
+                        A teacher enters the classroom playing a Chinese flute (Yang'guan), capturing students' attention. After finishing, the teacher asks students to name the piece. Students laugh and suggest many incorrect names. The teacher reveals the correct answer and explains it's based on a Tang Dynasty poem.
+                      </p>
+                      <p className="text-gray-700 leading-relaxed mb-4">
+                        A student quotes a line from the poem. The teacher praises the interruption and offers extra scores. The teacher reveals the poem is the day's lesson and asks if anyone can write it on the blackboard. A student volunteers but makes a mistake. Another student points it out loudly, causing embarrassment and gossip.
+                      </p>
+                      <p className="text-gray-700 leading-relaxed">
+                        The teacher regains control, saying "We improve by making and correcting mistakes. Let's applaud her effort!" The class claps, and the teacher divides students into groups to discuss topics from the next slide.
+                      </p>
+                    </div>
+                    <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6">
+                      <p className="text-lg font-semibold text-gray-800">Your Role:</p>
+                      <p className="text-gray-700">You are an instructional designer tasked with redesigning this lesson using behaviorism-inspired instructional design theories.</p>
+                    </div>
+                    <h2 className="text-2xl font-bold mb-4 text-gray-800">Choose a Theory to Apply:</h2>
+                    <div className="grid gap-4">
+                      {Object.entries(theories).map(([key, theory]) => (
+                        <button
+                          key={key}
+                          onClick={() => handleTheorySelect(key)}
+                          className="bg-gradient-to-r from-amber-500 to-amber-600 text-white p-6 rounded-lg text-left hover:from-amber-600 hover:to-amber-700 transition-all transform hover:scale-105 shadow-lg"
+                        >
+                          <h3 className="text-2xl font-bold mb-2">{theory.name}</h3>
+                          <p className="text-amber-50">{theory.description}</p>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {screen === 'question' && !showFeedback && (
+                  <div className="bg-white rounded-lg shadow-2xl p-8">
+                    <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white p-6 rounded-lg mb-6">
+                      <h2 className="text-3xl font-bold">{theories[selectedTheory].name}</h2>
+                      <p className="text-amber-50 mt-2">{theories[selectedTheory].description}</p>
+                    </div>
+                    <h3 className="text-2xl font-semibold mb-6 text-gray-800">{theories[selectedTheory].question}</h3>
+                    <div className="space-y-4">
+                      {theories[selectedTheory].options.map((option, index) => (
+                        <button
+                          key={index}
+                          onClick={() => handleAnswerSelect(index)}
+                          className="w-full bg-slate-100 hover:bg-slate-200 text-gray-800 p-6 rounded-lg text-left transition-all border-2 border-slate-300 hover:border-amber-500"
+                        >
+                          <div className="flex items-start">
+                            <span className="font-bold text-amber-600 mr-3 text-xl">{String.fromCharCode(65 + index)}.</span>
+                            <span className="text-lg">{option.text}</span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                    <button
+                      onClick={handleReturnToStart}
+                      className="mt-6 flex items-center gap-2 text-amber-600 hover:text-amber-700 font-semibold"
+                    >
+                      <RotateCcwIcon />
+                      Return to Start
+                    </button>
+                  </div>
+                )}
+
+                {showFeedback && (
+                  <div className="bg-white rounded-lg shadow-2xl p-8">
+                    <div className={`${isCorrect ? 'bg-green-100 border-green-500' : 'bg-red-100 border-red-500'} border-l-4 p-6 rounded-lg mb-6`}>
+                      <h2 className={`text-3xl font-bold mb-4 ${isCorrect ? 'text-green-700' : 'text-red-700'}`}>
+                        {isCorrect ? '🎉 Congratulations!' : '❌ Not Quite Right'}
+                      </h2>
+                      <p className="text-lg text-gray-800 leading-relaxed">
+                        {theories[selectedTheory].options.find(opt => opt.correct === isCorrect).feedback}
+                      </p>
+                    </div>
+                    <div className="flex gap-4">
+                      {!isCorrect && (
+                        <button
+                          onClick={handleTryAgain}
+                          className="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 px-6 rounded-lg transition-all text-lg"
+                        >
+                          Try Again
+                        </button>
+                      )}
+                      <button
+                        onClick={handleReturnToStart}
+                        className="flex-1 bg-slate-600 hover:bg-slate-700 text-white font-bold py-4 px-6 rounded-lg transition-all text-lg flex items-center justify-center gap-2"
+                      >
+                        <RotateCcwIcon />
+                        Return to Start
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        };
+
+        ReactDOM.render(<BehaviorismGame />, document.getElementById('root'));
+    </script>
+</body>
+</html>
